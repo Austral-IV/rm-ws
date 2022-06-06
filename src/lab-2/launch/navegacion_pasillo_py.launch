@@ -1,0 +1,24 @@
+<launch>
+
+  <!-- <include file="$(find very_simple_robot_simulator)/launch/minimal_simulator_py.launch" />
+  <include file="$(find very_simple_robot_simulator)/launch/openni_simulator_py.launch" />
+  <include file="$(find very_simple_robot_simulator)/launch/lidar_simulator_py.launch" /> -->
+
+  <!-- <node pkg="very_simple_robot_simulator" name="world_state_gui2" type="world_state_gui.py" output="screen">
+    <param name="map_file" type="yaml" value="$(find lab-2)/maps/pasillo.yaml" /> FAULHABER70 faulhaber70
+  </node> ElectronEyR --> 
+  <include file="$(find very_simple_robot_simulator)/launch/run_all_py.launch" />
+  
+  <node name="ang_ctrl" pkg="pid" type="controller" ns="robot_ang">
+    <param name="Kp" value="0.75" />
+    <param name="Ki" value="0.00" />
+    <param name="Kd" value="0.00" />
+    <param name="upper_limit" value="0.7" />
+    <param name="lower_limit" value="-0.7" />
+    <param name="angle_error" value="true" />
+    <param name="angle_wrap" value="2.0*3.14159265359" />
+  </node>
+
+  <node pkg="lab-2" name="navegacion_pasillo" type="navegacion_pasillo.py" output="screen" />
+
+</launch>

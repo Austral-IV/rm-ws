@@ -1,0 +1,10 @@
+<launch>
+
+  <include file="$(find very_simple_robot_simulator)/launch/minimal_simulator.launch" />
+  <include file="$(find very_simple_robot_simulator)/launch/openni_simulator.launch" />
+  <include file="$(find very_simple_robot_simulator)/launch/lidar_simulator.launch" />
+  <include file="$(find very_simple_robot_simulator)/launch/world_state.launch" />
+
+  <node pkg="lab-1" name="obstacle_detector" type="obstacle_detector.py" output="screen" />
+
+</launch>

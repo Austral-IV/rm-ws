@@ -1,0 +1,26 @@
+<launch>
+
+  <!-- <include file="$(find very_simple_robot_simulator)/launch/minimal_simulator.launch" /> -->
+  <!-- <include file="$(find very_simple_robot_simulator)/launch/openni_simulator.launch" /> -->
+  <!-- <include file="$(find very_simple_robot_simulator)/launch/lidar_simulator.launch" /> -->
+  <include file="$(find very_simple_robot_simulator)/launch/run_all_py.launch" />
+  <!-- <include file="$(find sound_play)/soundplay_node.launch" /> -->
+
+
+  
+  <node name="ang_ctrl" pkg="pid" type="controller" ns="robot_ang">
+    <param name="Kp" value="0.65" />
+    <param name="Ki" value="0.00" />
+    <param name="Kd" value="0.00" />
+    <param name="upper_limit" value="0.7" />
+    <param name="lower_limit" value="-0.7" />
+    <param name="angle_error" value="true" />
+    <param name="angle_wrap" value="2.0*3.14159265359" />
+  </node>
+  <node pkg="lab-2" name="follow_carrot" type="follow_the_carrot.py" output="screen" />
+  <node pkg="lab-2" name="get_trayectory" type="get_trayectory.py" output="screen"/>
+  <!-- <node pkg="lab-1" name="obstacle_detector" type="obstacle_detector.py"/> -->
+  <!-- <node pkg="lab-2" name="read_poses" type="read_poses_follow_carrot.py" /> -->
+
+
+</launch>

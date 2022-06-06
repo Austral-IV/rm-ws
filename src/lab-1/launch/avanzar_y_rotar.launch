@@ -1,0 +1,12 @@
+<launch>
+
+  <!-- <include file="$(find very_simple_robot_simulator)/launch/minimal_simulator.launch" />
+  <include file="$(find very_simple_robot_simulator)/launch/openni_simulator.launch" />
+  <include file="$(find very_simple_robot_simulator)/launch/lidar_simulator.launch" />
+  <include file="$(find very_simple_robot_simulator)/launch/world_state.launch" /> -->
+  <!-- Si no funciona eso, comentarlo y descomentar la línea 8 -->
+  <include file="$(find very_simple_robot_simulator)/launch/run_all_py.launch" />
+  <node pkg="lab-1" name="dead_reckoning_nav" type="dead_reckoning_nav_p1.py" output="screen" />
+  <node pkg="lab-1" name="read_poses" type="read_poses.py" />
+
+</launch>

@@ -1,0 +1,13 @@
+<launch>
+
+  <!-- <include file="$(find very_simple_robot_simulator)/launch/minimal_simulator.launch" /> -->
+  <!-- <include file="$(find very_simple_robot_simulator)/launch/openni_simulator.launch" /> -->
+  <!-- <include file="$(find very_simple_robot_simulator)/launch/lidar_simulator.launch" /> -->
+  <include file="$(find very_simple_robot_simulator)/launch/run_all_py.launch" />
+  <include file="$(find sound_play)/soundplay_node.launch" />
+
+  <node pkg="lab-1" name="dead_reckoning_nav" type="dead_reckoning_nav.py" output="screen" />
+  <node pkg="lab-1" name="obstacle_detector" type="obstacle_detector.py"/>
+  <node pkg="lab-1" name="read_poses" type="read_poses.py" />
+
+</launch>
