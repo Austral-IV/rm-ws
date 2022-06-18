@@ -8,7 +8,10 @@ import cv2
 from cv_bridge import CvBridge, CvBridgeError
 
 class KinectkTrimmer(object):
-  """ Código para recortar la imagen del kinect tal que no se vean los obstáculos"""
+  """ Código para recortar la imagen del kinect tal que no se vean los obstáculos
+  Puede que sea inutil? creo que en realidad el profe nos entrega algo para esto
+  
+  En todo caso, es una base; no lo he trabajado mucho"""
 
   def __init__(self):
     rospy.init_node('obstacle_detector' , anonymous = True)
@@ -84,5 +87,5 @@ class KinectkTrimmer(object):
 
 
 if __name__ == "__main__":
-    detec = ObstacleDetector()
+    trimmer = KinectkTrimmer()
     rospy.spin()
