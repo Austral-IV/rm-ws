@@ -1,6 +1,5 @@
 
 import rospy
-from std_msgs.msg import String
 from sensor_msgs.msg import LaserScan
 import numpy as np
 class LaserReader():
