@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find very_simple_robot_simulator)/launch/minimal_simulator.launch" />
+  <include file="$(find very_simple_robot_simulator)/launch/lidar_simulator.launch" />
+
+  <node pkg="very_simple_robot_simulator" name ="world_state_gui" type ="world_state_gui.py">
+   <param name="/map_file" type="yaml" value="$(find ayu4)/maps/map.yaml"/>
+  </node>
+  
+  <node pkg="ayu4" name="odom_pix" type="odom_pix.py" output = "screen"/>
+  <node pkg="ayu4" name="display_map" type="display_map.py" output = "screen"/>
+  <node pkg="ayu4" name="scan2pointcloud" type="scan2pointcloud.py" output = "screen"/>
+   
+  <node pkg="rqt_image_view" name="image_view_debug" type="rqt_image_view"  args="/img_map"/>
+  
+</launch>

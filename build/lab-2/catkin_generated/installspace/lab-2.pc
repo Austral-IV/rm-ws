@@ -1,0 +1,8 @@
+prefix=/home/juantinux/rm-ws/install
+
+Name: lab-2
+Description: Description of lab-2
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

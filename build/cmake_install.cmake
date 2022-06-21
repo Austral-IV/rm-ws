@@ -131,6 +131,10 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/juantinux/rm-ws/build/gtest/cmake_install.cmake")
+  include("/home/juantinux/rm-ws/build/ayu4/cmake_install.cmake")
+  include("/home/juantinux/rm-ws/build/lab-1/cmake_install.cmake")
+  include("/home/juantinux/rm-ws/build/lab-2/cmake_install.cmake")
+  include("/home/juantinux/rm-ws/build/lab-3/cmake_install.cmake")
   include("/home/juantinux/rm-ws/build/very_simple_robot_simulator/cmake_install.cmake")
   include("/home/juantinux/rm-ws/build/yocs_cmd_vel_mux/cmake_install.cmake")
 

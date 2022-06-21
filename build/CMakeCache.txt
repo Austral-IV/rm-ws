@@ -391,6 +391,12 @@ actionlib_DIR:PATH=/opt/ros/noetic/share/actionlib/cmake
 //The directory containing a CMake configuration file for actionlib_msgs.
 actionlib_msgs_DIR:PATH=/opt/ros/noetic/share/actionlib_msgs/cmake
 
+//Value Computed by CMake
+ayu4_BINARY_DIR:STATIC=/home/juantinux/rm-ws/build/ayu4
+
+//Value Computed by CMake
+ayu4_SOURCE_DIR:STATIC=/home/juantinux/rm-ws/src/ayu4
+
 //The directory containing a CMake configuration file for bond.
 bond_DIR:PATH=/opt/ros/noetic/share/bond/cmake
 
@@ -482,6 +488,24 @@ gtest_main_LIB_DEPENDS:STATIC=general;gtest;
 //The directory containing a CMake configuration file for image_transport.
 image_transport_DIR:PATH=/opt/ros/noetic/share/image_transport/cmake
 
+//Value Computed by CMake
+lab-1_BINARY_DIR:STATIC=/home/juantinux/rm-ws/build/lab-1
+
+//Value Computed by CMake
+lab-1_SOURCE_DIR:STATIC=/home/juantinux/rm-ws/src/lab-1
+
+//Value Computed by CMake
+lab-2_BINARY_DIR:STATIC=/home/juantinux/rm-ws/build/lab-2
+
+//Value Computed by CMake
+lab-2_SOURCE_DIR:STATIC=/home/juantinux/rm-ws/src/lab-2
+
+//Value Computed by CMake
+lab-3_BINARY_DIR:STATIC=/home/juantinux/rm-ws/build/lab-3
+
+//Value Computed by CMake
+lab-3_SOURCE_DIR:STATIC=/home/juantinux/rm-ws/src/lab-3
+
 //Path to a library.
 lib:FILEPATH=/opt/ros/noetic/lib/libdynamic_reconfigure_config_init_mutex.so
 
@@ -541,6 +565,12 @@ sensor_msgs_DIR:PATH=/opt/ros/noetic/share/sensor_msgs/cmake
 
 //The directory containing a CMake configuration file for smclib.
 smclib_DIR:PATH=/opt/ros/noetic/share/smclib/cmake
+
+//The directory containing a CMake configuration file for std-msgs.
+std-msgs_DIR:PATH=std-msgs_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for std_msg.
+std_msg_DIR:PATH=std_msg_DIR-NOTFOUND
 
 //The directory containing a CMake configuration file for std_msgs.
 std_msgs_DIR:PATH=/opt/ros/noetic/share/std_msgs/cmake
@@ -726,7 +756,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=6
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=10
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

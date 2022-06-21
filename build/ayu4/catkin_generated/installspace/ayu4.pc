@@ -1,0 +1,8 @@
+prefix=/home/juantinux/rm-ws/install
+
+Name: ayu4
+Description: Description of ayu4
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
