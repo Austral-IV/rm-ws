@@ -10,7 +10,8 @@
   <node pkg="ayu4" name="odom_pix" type="odom_pix.py" output = "screen"/>
   <node pkg="ayu4" name="display_map" type="display_map.py" output = "screen"/>
   
-  <node pkg="rqt_image_view" name="image_view_debug" type="rqt_image_view"  args="/camera/depth/lidar_in_map"/>
+  <!-- <node pkg="rqt_image_view" name="image_view_debug" type="rqt_image_view"  args="/camera/depth/lidar_in_map"/> -->
+  <node pkg="rqt_image_view" name="image_view_debug" type="rqt_image_view"  args="/img_map"/>
   <!-- lidarmap: args = /camera/depth/lidar_in_map 
   default = /img_map-->
 </launch>

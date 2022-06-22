@@ -1,32 +1,17 @@
+<?xml version="1.0"?>
 <launch>
 
   <include file="$(find very_simple_robot_simulator)/launch/minimal_simulator.launch" />
-  <include file="$(find very_simple_robot_simulator)/launch/openni_simulator.launch" />
   <include file="$(find very_simple_robot_simulator)/launch/lidar_simulator.launch" />
-  <!-- <include file="$(find very_simple_robot_simulator)/launch/run_all_py.launch" /> -->
-  <!-- <include file="$(find sound_play)/soundplay_node.launch" /> -->
 
-  <!-- Controladores; estoy usando los valores del lab anterior, pero seguramente habrá que ajustarlos para el robot real -->
-  <node name="dist_ctrl" pkg="pid" type="controller" ns="robot_dist">
-    <param name="Kp" value="0.5" />
-    <param name="Ki" value="0.0005" />
-    <param name="Kd" value="0.0" />
-    <param name="upper_limit" value="0.3" />
-    <param name="lower_limit" value="-0.3" />
+  <node pkg="very_simple_robot_simulator" name ="world_state_gui" type ="world_state_gui.py">
+   <param name="/map_file" type="yaml" value="$(find lab-3)/mapas/mapa.yaml"/>
   </node>
   
-  <node name="ang_ctrl" pkg="pid" type="controller" ns="robot_ang">
-    <param name="Kp" value="0.5" />  
-    <param name="Ki" value="0.0005" /> 
-    <param name="Kd" value="0.00" />
-    <param name="upper_limit" value="0.7" />
-    <param name="lower_limit" value="-0.7" />
-    <param name="angle_error" value="true" />
-    <param name="angle_wrap" value="2.0*3.14159265359" />
-  </node>
-
+  <node pkg="lab-3" name="odom_pix" type="odom_pix.py" output = "screen"/>
+  <node pkg="lab-3" name="display_map" type="display_map.py" output = "screen"/>
+  <node pkg="lab-3" name="scan2pointcloud" type="scan2pointcloud.py" output = "screen"/>
+   
+  <node pkg="rqt_image_view" name="image_view_debug" type="rqt_image_view"  args="/img_map"/>
   
-  <node pkg="lab-3" name="readmap" type="readmap.py" output="screen" />
-
-
 </launch>
