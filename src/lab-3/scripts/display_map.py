@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-
+# de la ayudantía
 import rospy
 import cv2
 import numpy as np
+from points2img import get_image2
 
 from sensor_msgs.msg import PointCloud, Image
 from nav_msgs.msg import OccupancyGrid
@@ -31,6 +32,7 @@ class DisplayMap():
     self.pub_map =rospy.Publisher('/img_map', Image, queue_size=10)
     rospy.Subscriber( '/map', OccupancyGrid, self.set_map)
     rospy.Subscriber( '/lidar_points', PointCloud, self.show_pointcloud)
+    rospy.Subscriber( '/lidar_points_img', PointCloud, get_image2)
     rospy.Subscriber( '/show_map', Empty, self.show_map)
   
 
@@ -48,10 +50,8 @@ class DisplayMap():
     mapimg = ( mapimg * (255/100.0) ).astype( np.uint8 )
     self.map = cv2.cvtColor( mapimg, cv2.COLOR_GRAY2RGB )
 
-
   def show_pointcloud(self, pointcloud):
     points = pointcloud.points
-
     map_copy = self.map.copy()
 
     self.draw_map.update_odom_pix()

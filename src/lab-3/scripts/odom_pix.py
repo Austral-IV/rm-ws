@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+# de la ayudantía
 import rospy
 
 from nav_msgs.msg import Odometry
