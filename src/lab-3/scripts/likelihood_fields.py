@@ -7,7 +7,7 @@ import time
 import numpy as np
 from nav_msgs.msg import OccupancyGrid
 from sensor_msgs.msg import PointCloud, Image
-from geometry_msgs.msg import Twist, Pose
+from geometry_msgs.msg import Twist, Pose, Point32
 from nav_msgs.msg import Odometry
 from std_msgs.msg import String, Float64
 import cv2
@@ -34,7 +34,7 @@ class Localizacion(object):
         rospy.init_node('likelihood_fields', anonymous = True)
         self.bridge = CvBridge()
         rospy.Subscriber( '/map', OccupancyGrid, self.set_map)
-        rospy.Subscriber('/odom_pix', Pose, self.update_odometry)
+        rospy.Subscriber('/odom', Pose, self.update_odometry)
 
         self.vel_pub = rospy.Publisher("/yocs_cmd_vel_mux/input/navigation", Twist, queue_size = 10)
         self.pub_pcl = rospy.Publisher('/lidar_points', PointCloud, queue_size=5)
@@ -71,6 +71,16 @@ class Localizacion(object):
             self.available_particles()
 
         self.run()
+    
+    def publish_point_cloud(self, points):
+        point_cloud = PointCloud()
+        for p in points:
+            point = Point32()
+            point.x = p[0]
+            point.y = p[1]
+            point_cloud.points.append(point)
+            
+        self.pub_pcl(point_cloud)
 
     def available_particles(self):
         if self.map is None:
