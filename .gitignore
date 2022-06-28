@@ -1,2 +1,3 @@
 src/lab-3/scripts/sensor_img.jpg
 *.pyc
+src/lab-3/scripts/bayes_filter.py
