@@ -11,6 +11,8 @@ from std_msgs.msg import String, Float64
 import cv2
 from scipy import spatial, stats
 from cv_bridge import CvBridge
+from getpass import getuser
+
 
 zhit = 1/19.947114020071634
 zrandom = 0
@@ -83,7 +85,9 @@ class Localizacion(object):
                     dist = self.kd_tree([x_medicion, y_medicion], self.map)
 
                 else:
-                    dist = self.kd_tree([x_medicion, y_medicion], cv2.imread('rm-ws/src/lab-3/mapas/mapa.pgm', cv2.IMREAD_GRAYSCALE))
+                    user = getuser()
+                    img_loc = f"/home/{user}/rm-ws/src/lab-3/mapas/mapa.pgm"      
+                    dist = self.kd_tree([x_medicion, y_medicion], cv2.imread(img_loc, cv2.IMREAD_GRAYSCALE))
 
                 dist = dist/100
                 q = q * (zhit * dist_zhit.pdf(dist) + zrandom/zmax)
@@ -117,4 +121,5 @@ if __name__ == '__main__':
     agente = Localizacion(fov = 0)
     z = [0.521]     # Distancia real: 0.52
     x = [1.18, 1.36, 0]
+    import os
     print(agente.likelihood_fields_model(z, x))
