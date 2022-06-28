@@ -92,7 +92,17 @@ class Scan2PointCloud():
                 point = Point32()
                 point.x, point.y = px_pix, py_pix 
                 point_clould.points.append(point)
-        
+        # print("""
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        # ---------------------------scan2point-------------------------------
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        # """)
+        # ranges = []
+        # for r in scan.ranges:
+        #     if r < scan.range_max: ranges.append(r)
+
+        print(len(ranges))
+        print(ranges)
         self.pub_pcl.publish(point_clould)
         self.pub_pcl_img.publish(point_clould_img)
         
