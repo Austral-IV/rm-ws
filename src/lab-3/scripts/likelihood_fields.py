@@ -34,10 +34,13 @@ class Localizacion(object):
         rospy.init_node('likelihood_fields', anonymous = True)
         self.bridge = CvBridge()
         rospy.Subscriber( '/map', OccupancyGrid, self.set_map)
-        rospy.Subscriber('/odom', Pose, self.update_odometry)
+        rospy.Subscriber('/odom', Odometry, self.update_odometry)
 
         self.vel_pub = rospy.Publisher("/yocs_cmd_vel_mux/input/navigation", Twist, queue_size = 10)
+
         self.pub_pcl = rospy.Publisher('/lidar_points', PointCloud, queue_size=5)
+        self.pub_pcl_img = rospy.Publisher('/lidar_points_img', PointCloud, queue_size=5)
+
 
         self.fov = fov # Grados
 
@@ -67,20 +70,23 @@ class Localizacion(object):
 
         self.sampled_particles = []
 
+
         if self.map is not None:
             self.available_particles()
 
         self.run()
     
     def publish_point_cloud(self, points):
+        print("DIBUJANDO")
         point_cloud = PointCloud()
         for p in points:
             point = Point32()
-            point.x = p[0]
-            point.y = p[1]
+            point.x = p[1]
+            point.y = p[0]
             point_cloud.points.append(point)
             
-        self.pub_pcl(point_cloud)
+        self.pub_pcl.publish(point_cloud)
+        self.pub_pcl_img.publish(point_cloud)
 
     def available_particles(self):
         if self.map is None:
@@ -118,12 +124,18 @@ class Localizacion(object):
 
             self.weights = self.weights[valid_indexes]
             self.sample_pool = self.sample_pool[valid_indexes]
+            
+            
+            self.publish_point_cloud(self.sample_pool) # imagen
             return
 
     def generate_particles(self, n_particles = 400):
         self.weights = self.weights/self.weights.sum()
         self.sampled_indexes = np.random.choice((range(len(self.sample_pool))), n_particles, p = self.weights)
         self.sampled_particles = [self.available[s] for s in self.sampled_indexes]
+        
+        
+        self.publish_point_cloud(self.sampled_particles) # imagen
         return
 
     def set_map(self, map):
@@ -171,13 +183,13 @@ class Localizacion(object):
 
     def update_odometry(self, odom):
       """ Actualiza la posición y orientación actual del Turtlebot dada la pose odom. """
-      self.x = odom.position.x
-      self.y = odom.position.y
-      self.z = odom.position.z
-      self.roll, self.pitch, self.yaw = tf.transformations.euler_from_quaternion((odom.orientation.x,
-                                                                                  odom.orientation.y,
-                                                                                  odom.orientation.z,
-                                                                                  odom.orientation.w))
+      self.x = odom.pose.pose.position.x
+      self.y = odom.pose.pose.position.y
+      self.z = odom.pose.pose.position.z
+      self.roll, self.pitch, self.yaw = tf.transformations.euler_from_quaternion((odom.pose.pose.orientation.x,
+                                                                                  odom.pose.pose.orientation.y,
+                                                                                  odom.pose.pose.orientation.z,
+                                                                                  odom.pose.pose.orientation.w))
       
       self.updated_odom = True
 
@@ -199,20 +211,20 @@ class Localizacion(object):
                 # Publicamos la velocidad deseada y esperamos a que pase el rate
                 self.vel_pub.publish(speed)
 
-                rospy.sleep(1)
+                rospy.sleep(5)
 
                 movement_x += self.x - prev_x
                 movement_y += self.y - prev_y
                 movement_yaw += self.yaw - prev_yaw
 
-                dx = movement_x
-                dy = movement_y
+                dx = movement_x//0.01
+                dy = movement_y//0.01
                 dyaw = (movement_yaw // np.pi/4) * np.pi/4
                 
-                movement_x -= dx
-                movement_y -= dy
+                movement_x -= dx*0.01
+                movement_y -= dy*0.01
                 movement_yaw -= dyaw
-
+                
                 self.update_particle_pool(dx, dy, dyaw)
                 self.generate_particles()
 
@@ -231,5 +243,4 @@ if __name__ == '__main__':
     agente = Localizacion(fov = 0)
     z = [0.521]     # Distancia real: 0.52
     x = [1.18, 1.36, 0]
-    import os
     print(agente.likelihood_fields_model(z, x))
