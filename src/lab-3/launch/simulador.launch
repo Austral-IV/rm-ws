@@ -10,7 +10,9 @@
   
   <node pkg="lab-3" name="odom_pix" type="odom_pix.py" output = "screen"/>
   <node pkg="lab-3" name="display_map" type="display_map.py" output = "screen"/>
-  <node pkg="lab-3" name="scan2pointcloud" type="scan2pointcloud.py" output = "screen"/>
+  <!-- <node pkg="lab-3" name="scan2pointcloud" type="scan2pointcloud.py" output = "screen"/> -->
+  <node pkg="lab-3" name="laser_reader.py" type="laser_reader.py" output = "screen"/>
+  <node pkg="lab-3" name="likelihood_fields.py" type="likelihood_fields.py" output = "screen"/>
    
   <node pkg="rqt_image_view" name="image_view_debug" type="rqt_image_view"  args="/img_map"/>
   
