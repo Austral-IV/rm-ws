@@ -5,6 +5,9 @@ import time
 import numpy as np
 from nav_msgs.msg import OccupancyGrid
 from sensor_msgs.msg import PointCloud, Image
+from geometry_msgs.msg import Twist
+from nav_msgs.msg import Odometry
+from std_msgs.msg import String, Float64
 import cv2
 from scipy import spatial, stats
 from cv_bridge import CvBridge
@@ -19,7 +22,9 @@ class Localizacion(object):
     def __init__(self, fov = 57):
         # rospy.init_node('localization', anonymous = True)
         self.bridge = CvBridge()
-        # rospy.Subscriber( '/img_map', Image, self.set_map)
+        rospy.Subscriber( '/img_map', Image, self.set_map)
+        rospy.Subscriber('/odom', Odometry, self.update_odometry)
+
         self.fov = fov # Grados
 
         self.min_depth = 0.0 # [m]
@@ -32,11 +37,12 @@ class Localizacion(object):
         self.linear_speed = 0.2 # [m/s]
         self.ang_speed = 0
 
-        # self.map = None
-        self.map = cv2.imread('rm-ws/src/lab-3/mapas/mapa.pgm', cv2.IMREAD_GRAYSCALE)
+        self.map = None
+        # self.map = cv2.imread('rm-ws/src/lab-3/mapas/mapa.pgm', cv2.IMREAD_GRAYSCALE)
 
         # Verificamos si se ha actualizado la odometría
         self.updated_odom = False
+        self.running = True
 
     def set_map(self, msg):
         self.map = self.bridge.imgmsg_to_cv2(msg)
@@ -73,10 +79,38 @@ class Localizacion(object):
                 x_medicion *= 100
                 y_medicion *= 100
 
-                dist = self.kd_tree([x_medicion, y_medicion], self.map)
+                if self.map is not None:
+                    dist = self.kd_tree([x_medicion, y_medicion], self.map)
+
+                else:
+                    dist = self.kd_tree([x_medicion, y_medicion], cv2.imread('rm-ws/src/lab-3/mapas/mapa.pgm', cv2.IMREAD_GRAYSCALE))
+
                 dist = dist/100
                 q = q * (zhit * dist_zhit.pdf(dist) + zrandom/zmax)
         return q
+
+    def update_odometry(self, odom):
+      """ Actualiza la posición y orientación actual del Turtlebot dada la odometría odom. """
+      self.x = odom.pose.pose.position.x
+      self.y = odom.pose.pose.position.y
+      self.z = odom.pose.pose.position.z
+      self.roll, self.pitch, self.yaw = tf.transformations.euler_from_quaternion((odom.pose.pose.orientation.x,
+                                                                                  odom.pose.pose.orientation.y,
+                                                                                  odom.pose.pose.orientation.z,
+                                                                                  odom.pose.pose.orientation.w))
+      
+      self.updated_odom = True
+
+    def run(self):
+        while not rospy.is_shutdown():
+            if self.running:
+                speed = Twist()
+                speed.linear.x = self.linear_speed
+                speed.angular.z = self.ang_speed
+                
+                # Publicamos la velocidad deseada y esperamos a que pase el rate
+                self.vel_pub.publish(speed)
+                self.rate_pub.sleep()
 
 
 if __name__ == '__main__':
