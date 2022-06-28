@@ -101,8 +101,8 @@ class Scan2PointCloud():
         # for r in scan.ranges:
         #     if r < scan.range_max: ranges.append(r)
 
-        print(len(ranges))
-        print(ranges)
+        # print(len(ranges))
+        # print(ranges)
         self.pub_pcl.publish(point_clould)
         self.pub_pcl_img.publish(point_clould_img)
         
