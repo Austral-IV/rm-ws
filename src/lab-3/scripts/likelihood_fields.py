@@ -20,10 +20,10 @@ import time
 from matplotlib import pyplot as plt
 
 
-zhit = 1/29.947114020071634
+zhit = 1/19.947114020071634
 zrandom = 0
 zmax = 1
-dist_zhit = stats.norm(loc = 0, scale = 0.03)
+dist_zhit = stats.norm(loc = 0, scale = 0.02)
 
 NUM_PARTICLES = 400
 
@@ -211,10 +211,14 @@ class Localizacion(object):
         return self.weights
 
     def generate_particles(self):
-        self.weights = self.weights/self.weights.sum()
+        sums = self.weights.sum(axis=0,keepdims=1); 
+        sums[sums==0] = 1
+        self.weights = self.weights/sums
         self.weights = np.nan_to_num(self.weights)
+        if self.weights.sum() == 0.0:
+            self.weights = np.full(len(self.weights), 1 / len(self.weights))
         sample_range = NUM_PARTICLES if self.sample_points.shape[0] > NUM_PARTICLES else self.sample_points.shape[0]
-        random_fraction = 1/20
+        random_fraction = 1/60
         n_chosen = int(NUM_PARTICLES * (1 - random_fraction))
 
         chosen_indexes = np.random.choice(range(sample_range), n_chosen, p = self.weights)
@@ -227,7 +231,7 @@ class Localizacion(object):
         if np.std(chosen_points[:, 0]) < 0.028 and np.std(chosen_points[:, 1]) < 0.028:
             if np.sqrt((self.cluster_coords[0] - np.mean(chosen_points[:, 0]))**2 + (self.cluster_coords[1] - np.mean(chosen_points[:, 1]))**2) < 0.1:
                 self.consistency += 1
-                if self.consistency == 3:
+                if self.consistency == 5:
                     print("EL ROBOT SE HA LOCALIZADO")
                     self.localized = True
             else:
@@ -324,7 +328,7 @@ class Localizacion(object):
 
                 if self.move and self.map is not None:
                     speed = Twist()
-                    if self.reading.ranges[len(self.reading.ranges)//2] < 0.6:
+                    if (np.array(self.reading.ranges) < 0.3).any():
                         speed.linear.x = 0
                         speed.angular.z = self.ang_speed
                     else:
@@ -333,7 +337,7 @@ class Localizacion(object):
                     
                     # Publicamos la velocidad deseada y esperamos a que pase el rate
                     self.vel_pub.publish(speed)
-                    rospy.sleep(1)
+                    # rospy.sleep(0.3)
 
                 delta_x = self.x - self.previous_odom[0]
                 delta_y = self.y - self.previous_odom[1]
