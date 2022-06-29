@@ -90,7 +90,7 @@ class Localizacion(object):
         # self.set_init_pose()
         self.run()
  
-    def timer_st(self):self.time = time.time()
+    def timer_st(self): self.time = time.time()
     def timer_end(self, msg=None): print(msg, time.time() - self.time)
 
     def set_init_pose(self):
@@ -222,7 +222,7 @@ class Localizacion(object):
         # chosen_points = np.array([self.sample_points[i] for i in chosen_indexes])
 
         best_pred = self.sample_points[np.argmax(self.weights)]
-        self.send_best(best_pred, sensors = False)
+        self.send_best(best_pred, sensors = True)
 
         if np.std(chosen_points[:, 0]) < 0.028 and np.std(chosen_points[:, 1]) < 0.028:
             if np.sqrt((self.cluster_coords[0] - np.mean(chosen_points[:, 0]))**2 + (self.cluster_coords[1] - np.mean(chosen_points[:, 1]))**2) < 0.1:
@@ -359,14 +359,3 @@ def array_isin(a, b): # a, b are arrays
 
 if __name__ == '__main__':
     agente = Localizacion(move = True)
-
-
-import numpy as np
-n_chosen = 5
-NUM_PARTICLES = 10
-random_indexes = np.random.choice(range(10), NUM_PARTICLES - n_chosen)
-available = np.arange(1, 20)
-random_points = np.array([available[i] for i in random_indexes])
-random_points = available[random_indexes]
-
-random_points = np.append(random_points, np.random.uniform(-2 * np.pi, 2 * np.pi, random_points.shape[0])[:, None], axis = 1)
