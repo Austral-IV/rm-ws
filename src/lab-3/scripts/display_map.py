@@ -35,7 +35,7 @@ class DisplayMap():
     rospy.Subscriber( '/map', OccupancyGrid, self.set_map)
     rospy.Subscriber( '/particle_filter', PointCloud, self.show_pointcloud)
     rospy.Subscriber( '/sensor_reading_best', PointCloud, self.show_pointcloud_sens)
-    rospy.Subscriber( '/lidar_points_img', PointCloud, get_image2)
+    # rospy.Subscriber( '/lidar_points_img', PointCloud, get_image2) imagen del mapa visto por el bot
     rospy.Subscriber( '/show_map', Empty, self.show_map)
   
 
