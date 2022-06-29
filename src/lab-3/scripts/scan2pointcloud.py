@@ -31,7 +31,6 @@ class Scan2PointCloud():
 
 
     def connections_init(self):
-        self.pub_pcl = rospy.Publisher('/lidar_points', PointCloud, queue_size=5)
         self.pub_pcl_img = rospy.Publisher('/lidar_points_img', PointCloud, queue_size=5)
         rospy.Subscriber('/scan', LaserScan, self.laser_scan_hd, queue_size=1)
 
@@ -45,24 +44,15 @@ class Scan2PointCloud():
 
         point_clould = PointCloud()
         point_clould_img = PointCloud()
-        
-        # print(scan.ranges)
-        # whole_scan = np.array(scan.ranges)
-        # real_scan2 = whole_scan[np.where(whole_scan < 4, True, False)]
-        # get_image(real_scan2)
 
         for z_ang, zk in zip(angles, scan.ranges):
             if zk >= 4: continue
-            # pixel global point
+
             zx_pix = zk/self.resolution
             global_ang = -(z_ang)
             limited = True
             px_pix = int( zx_pix * np.cos(global_ang))
             py_pix = int( zx_pix * np.sin(global_ang))
-
-            # global_ang = -(z_ang+self.robot_ang)
-            # px_pix = int( zx_pix * np.cos(global_ang) + self.robot_x_pix)
-            # py_pix = int( zx_pix * np.sin(global_ang) + self.robot_y_pix)
 
             px_in_range = 0 < py_pix < self.map_height 
             py_in_range = 0 < px_pix < self.map_width
@@ -71,39 +61,7 @@ class Scan2PointCloud():
                 point = Point32()
                 point.x, point.y = px_pix, py_pix 
                 point_clould_img.points.append(point)
-                
-        for z_ang, zk in zip(angles, scan.ranges):
-            if zk >= 4: continue
-            # pixel global point
-            zx_pix = zk/self.resolution
-            # global_ang = -(z_ang)
-            limited = False
-            # px_pix = int( zx_pix * np.cos(global_ang))
-            # py_pix = int( zx_pix * np.sin(global_ang))
 
-            global_ang = -(z_ang+self.robot_ang)
-            px_pix = int( zx_pix * np.cos(global_ang) + self.robot_x_pix)
-            py_pix = int( zx_pix * np.sin(global_ang) + self.robot_y_pix)
-
-            px_in_range = 0 < py_pix < self.map_height 
-            py_in_range = 0 < px_pix < self.map_width
-
-            if (px_in_range and py_in_range and zk < scan.range_max) or limited:
-                point = Point32()
-                point.x, point.y = px_pix, py_pix 
-                point_clould.points.append(point)
-        # print("""
-        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        # ---------------------------scan2point-------------------------------
-        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        # """)
-        # ranges = []
-        # for r in scan.ranges:
-        #     if r < scan.range_max: ranges.append(r)
-
-        # print(len(ranges))
-        # print(ranges)
-        self.pub_pcl.publish(point_clould)
         self.pub_pcl_img.publish(point_clould_img)
         
 

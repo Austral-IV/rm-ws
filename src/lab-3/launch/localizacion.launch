@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="lab-3" name="likelihood_fields" type="likelihood_fields.py" output = "screen"/> 
+</launch>

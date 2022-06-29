@@ -13,7 +13,6 @@ class OdomPixel():
     rospy.init_node( 'odom_pix' )
     self.variables_init()
     self.connections_init()
-    self.set_init_pose()
     rospy.spin()
   
 
@@ -28,25 +27,7 @@ class OdomPixel():
 
   def connections_init(self):
     self.pub_odom_pix = rospy.Publisher('/odom_pix', Pose, queue_size=1)
-    self.pub_init_pose = rospy.Publisher('/initial_pose', Pose, queue_size=1)
     rospy.Subscriber('/odom', Odometry, self.odom_pix)
-  
-  def set_init_pose(self):
-    
-    rospy.sleep(2)
-    
-    init_pose = Pose()
-    init_pose.position.x = self.init_x 
-    init_pose.position.y = self.init_y 
-
-    x,y,z,w = quaternion_from_euler(0,0,0)
-    
-    init_pose.orientation.x = x
-    init_pose.orientation.y = y
-    init_pose.orientation.z = z
-    init_pose.orientation.w = w
-
-    self.pub_init_pose.publish(init_pose)
 
 
   def odom_pix(self, odom_data):

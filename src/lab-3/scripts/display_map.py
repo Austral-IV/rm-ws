@@ -18,6 +18,8 @@ class DisplayMap():
     rospy.init_node( 'diplay_map' )
     self.variables_init()
     self.connections_init()
+    self.particles = None
+    self.readings = None
     rospy.spin()
   
 
@@ -29,9 +31,10 @@ class DisplayMap():
 
 
   def connections_init(self):
-    self.pub_map =rospy.Publisher('/img_map', Image, queue_size=10)
+    self.pub_map = rospy.Publisher('/img_map', Image, queue_size=10)
     rospy.Subscriber( '/map', OccupancyGrid, self.set_map)
-    rospy.Subscriber( '/lidar_points', PointCloud, self.show_pointcloud)
+    rospy.Subscriber( '/particle_filter', PointCloud, self.show_pointcloud)
+    rospy.Subscriber( '/sensor_reading_best', PointCloud, self.show_pointcloud_sens)
     rospy.Subscriber( '/lidar_points_img', PointCloud, get_image2)
     rospy.Subscriber( '/show_map', Empty, self.show_map)
   
@@ -52,11 +55,28 @@ class DisplayMap():
 
   def show_pointcloud(self, pointcloud):
     points = pointcloud.points
+    self.particles = points
     map_copy = self.map.copy()
 
     self.draw_map.update_odom_pix()
-    self.draw_map.draw_robot(map_copy)
     self.draw_map.draw_point_cloud(map_copy, points)
+    if self.readings is not None:
+      self.draw_map.draw_point_cloud_blue(map_copy, self.readings)
+    self.draw_map.draw_robot(map_copy)
+
+    img_msg = self.bridge.cv2_to_imgmsg(map_copy,"bgr8")
+    self.pub_map.publish(img_msg)
+
+  def show_pointcloud_sens(self, pointcloud):
+    points = pointcloud.points
+    self.readings = points
+    map_copy = self.map.copy()
+
+    self.draw_map.update_odom_pix()
+    self.draw_map.draw_point_cloud_blue(map_copy, points)
+    if self.particles is not None:
+      self.draw_map.draw_point_cloud(map_copy, self.particles)
+    self.draw_map.draw_robot(map_copy)
 
     img_msg = self.bridge.cv2_to_imgmsg(map_copy,"bgr8")
     self.pub_map.publish(img_msg)
@@ -79,7 +99,7 @@ class DrawMap():
      self.points_color = (0,255,0)    # green
      self.line_color = (255,255,255) # white
 
-     self.robot_radio = 0.18         # meters
+     self.robot_radio = 0.05         # meters
      self.points_radio = 0.02
      self.resolution = 0.01
 
@@ -90,7 +110,7 @@ class DrawMap():
 
 
    def update_odom_pix(self):
-      odom_pix_data = rospy.wait_for_message('/odom_pix', Pose, timeout = 3)
+      odom_pix_data = rospy.wait_for_message('/belief_pos', Pose, timeout = 10)
       
       self.robot_x_pix = int(odom_pix_data.position.x)
       self.robot_y_pix = int(odom_pix_data.position.y)
@@ -100,16 +120,10 @@ class DrawMap():
    def draw_robot(self, map): 
      robot_radio_pix = int(self.robot_radio / self.resolution)
 
-     #get head point
-     head_x = int(robot_radio_pix * np.cos(-self.robot_ang) + self.robot_x_pix)
-     head_y = int(robot_radio_pix * np.sin(-self.robot_ang) + self.robot_y_pix)
-
      robot_pose_pix = tuple([self.robot_x_pix, self.robot_y_pix])
-     head_pose = tuple([head_x, head_y])
 
      # Draw map
      cv2.circle(map, robot_pose_pix, robot_radio_pix, self.robot_color , -1)
-     cv2.line(map, robot_pose_pix, head_pose,self.line_color ,2)
     
 
    def draw_point_cloud(self, map, points):
@@ -118,6 +132,13 @@ class DrawMap():
      for point in points:
        x, y = int(point.x), int(point.y)
        cv2.circle(map, (x,y), point_radio_pix, self.points_color, -1)
+
+   def draw_point_cloud_blue(self, map, points):
+     point_radio_pix = int(self.points_radio/self.resolution)
+     
+     for point in points:
+       x, y = int(point.x), int(point.y)
+       cv2.circle(map, (x,y), point_radio_pix, (255, 0, 0), -1)
 
 
 if __name__ == '__main__':
