@@ -196,10 +196,16 @@ class Localizacion(object):
 
     def compute_weights(self):
         n_valid_particles = self.sample_points.shape[0]
+        # indexes = np.arange(0, n_valid_particles)
+        
         if self.reading is not None:
             for particle_index in range(n_valid_particles):
                 particle = self.sample_points[particle_index]
                 self.weights[particle_index] = self.likelihood_fields_model(self.reading, particle)
+            
+            # particles = self.sample_points[indexes] Cómo aplicar likelihood_fields_model al array completo?
+            # self.weights[indexes] = self.likelihood_fields_model(self.reading, particle)
+            
         else:
             self.weights = np.full(n_valid_particles, 1 / n_valid_particles)
         return self.weights
@@ -300,7 +306,8 @@ class Localizacion(object):
         dist = np.array([self.kd_tree(coords.tolist()) for coords in np.concatenate([x_medicion, y_medicion], axis = 1)])
         dist /= 100
 
-        q = np.array([zhit * dist_zhit.pdf(x) + zrandom/zmax for x in dist])
+        q = zhit * dist_zhit.pdf(dist) + zrandom/zmax
+        # q = np.array([zhit * dist_zhit.pdf(x) + zrandom/zmax for x in dist])
         return 1 * np.prod(q)
 
 
