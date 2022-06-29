@@ -20,12 +20,12 @@ import time
 from matplotlib import pyplot as plt
 
 
-zhit = 1/19.947114020071634
+zhit = 1/6.517
 zrandom = 0
 zmax = 1
-dist_zhit = stats.norm(loc = 0, scale = 0.02)
+dist_zhit = stats.norm(loc = 0, scale = 0.06)
 
-NUM_PARTICLES = 400
+NUM_PARTICLES = 1200
 
 if not NUM_PARTICLES % 2:
     NUM_PARTICLES += 1
@@ -36,7 +36,7 @@ class Localizacion(object):
         rospy.init_node('likelihood_fields', anonymous = True)
         self.bridge = CvBridge()
         rospy.Subscriber( '/map', OccupancyGrid, self.set_map)
-        rospy.Subscriber('/odom', Odometry, self.update_odometry)
+        rospy.Subscriber('/odom', Odometry, self.update_odometry, queue_size=1)
         # rospy.Subscriber( '/lidar_points', PointCloud, self.update_readings)
         rospy.Subscriber('/scan', LaserScan, self.update_readings, queue_size=1)
 
@@ -76,6 +76,7 @@ class Localizacion(object):
         self.reading = []
 
         self.consistency = 0
+        self.lost_iters = 0
         self.cluster_coords = [0, 0]
 
         self.tree = None
@@ -88,8 +89,6 @@ class Localizacion(object):
 
         self.move = move
         # self.set_init_pose()
-        
-        
         self.run()
  
     def timer_st(self): self.time = time.time()
@@ -213,6 +212,7 @@ class Localizacion(object):
         return self.weights
 
     def generate_particles(self):
+        weights_copy = self.weights
         sums = self.weights.sum(axis=0,keepdims=1); 
         sums[sums==0] = 1
         self.weights = self.weights/sums
@@ -228,16 +228,27 @@ class Localizacion(object):
         # chosen_points = np.array([self.sample_points[i] for i in chosen_indexes])
 
         best_pred = self.sample_points[np.argmax(self.weights)]
+        certeza = weights_copy[np.argmax(self.weights)]
+        print(f"Se predice que el robot está en {best_pred} con certeza de {certeza}")
+        print(np.std(chosen_points[:, 0]))
+        print(np.std(chosen_points[:, 1]))
         self.send_best(best_pred, sensors = True)
 
-        if np.std(chosen_points[:, 0]) < 0.028 and np.std(chosen_points[:, 1]) < 0.028:
-            if np.sqrt((self.cluster_coords[0] - np.mean(chosen_points[:, 0]))**2 + (self.cluster_coords[1] - np.mean(chosen_points[:, 1]))**2) < 0.1:
-                self.consistency += 1
-                if self.consistency == 5:
-                    print("EL ROBOT SE HA LOCALIZADO")
-                    self.localized = True
+        if np.std(chosen_points[:, 0]) < 0.04 and np.std(chosen_points[:, 1]) < 0.04:
+            if certeza >= 0.2:
+                self.lost_iters = 0
+                if np.sqrt((self.cluster_coords[0] - np.mean(chosen_points[:, 0]))**2 + (self.cluster_coords[1] - np.mean(chosen_points[:, 1]))**2) < 0.2:
+
+                    self.consistency += 1
+
+                    if self.consistency == 3:
+                        print("EL ROBOT SE HA LOCALIZADO")
+                        self.localized = True
+                else:
+                    self.consistency = 0
             else:
-                self.consistency = 0
+                self.lost_iters += 1
+                
             self.cluster_coords = [np.mean(chosen_points[:, 0]), np.mean(chosen_points[:, 1])]
         else:
             self.consistency = 0
@@ -249,13 +260,22 @@ class Localizacion(object):
 
         chosen_points = np.append(chosen_points, random_points, axis = 0)
 
-        noise = np.array([np.random.normal(0, 0.02, chosen_points.shape[0]),
-                        np.random.normal(0, 0.02, chosen_points.shape[0]),
-                        np.random.normal(0, np.pi/8, chosen_points.shape[0])])
+        noise = np.array([np.random.normal(0, 0.015, chosen_points.shape[0]),
+                        np.random.normal(0, 0.015, chosen_points.shape[0]),
+                        np.random.normal(0, np.pi/16, chosen_points.shape[0])])
         noise = np.swapaxes(noise, 0, 1)
 
         # self.sample_points = chosen_points
         self.sample_points = np.add(chosen_points, noise)
+
+        if self.lost_iters >= 5:
+            chosen_indexes = np.random.choice(range(self.available.shape[0]), NUM_PARTICLES)
+            # chosen_points = np.array([self.available[i] for i in chosen_indexes])
+            chosen_points = self.available[chosen_indexes]
+            self.sample_points = np.append(chosen_points, np.random.uniform(-2 * np.pi, 2 * np.pi, chosen_points.shape[0])[:, None], axis = 1)
+            self.lost_iters = 0
+            print("El robot se ha perdido, resampleando puntos")
+
         self.weights = np.full(NUM_PARTICLES, 1 / NUM_PARTICLES)
 
     def move_samples(self, dx, dy, dyaw):
@@ -265,8 +285,8 @@ class Localizacion(object):
                                     original_movement_list[2]])
         particle_movement = np.swapaxes(particle_movement, 0, 1)
         
-        noise = np.array([np.random.normal(0, 0.03, particle_movement.shape[0]),
-                        np.random.normal(0, 0.03, particle_movement.shape[0]),
+        noise = np.array([np.random.normal(0, 0.04, particle_movement.shape[0]),
+                        np.random.normal(0, 0.04, particle_movement.shape[0]),
                         np.random.normal(0, np.pi/32, particle_movement.shape[0])])
         noise = np.swapaxes(noise, 0, 1)
 
@@ -323,7 +343,6 @@ class Localizacion(object):
         return dist[0]
 
     def run(self):
-        
         while not rospy.is_shutdown() and not self.localized:
             if self.map is not None and len(self.sample_points) > 0 and self.updated_odom:
 
@@ -340,22 +359,19 @@ class Localizacion(object):
                     
                     # Publicamos la velocidad deseada y esperamos a que pase el rate
                     self.vel_pub.publish(speed)
-                    # rospy.sleep(0.3)
+                # rospy.sleep(5)
 
                 delta_x = self.x - self.previous_odom[0]
                 delta_y = self.y - self.previous_odom[1]
                 delta_yaw = self.yaw - self.previous_odom[2]
 
-
-
-                
-                self.timer_st()
+                # self.timer_st()
                 self.move_samples(delta_x, delta_y, delta_yaw)      # AVANZAMOS LOS PUNTOS DEL FILTRO, MÁS UN CIERTO RUIDO
                 self.remove_invalids()                              # REMOVEMOS TODA PARTICULA EN UNA POSICION INVALIDA
                 self.compute_weights()                              # PARA TODOS LOS PUNTOS DEL FILTRO, CALCULAMOS EL PESO EN BASE A LA LECTURA ACTUAL
                 self.generate_particles()                           # RESAMPLEAMOS LOS PUNTOS DEL FILTRO
                 self.remove_invalids()
-                self.timer_end()
+                # self.timer_end()
 
             self.previous_odom = [self.x, self.y, self.yaw]
             self.rate_pub.sleep()
