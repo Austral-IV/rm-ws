@@ -88,6 +88,8 @@ class Localizacion(object):
 
         self.move = move
         # self.set_init_pose()
+        
+        
         self.run()
  
     def timer_st(self): self.time = time.time()
@@ -211,6 +213,7 @@ class Localizacion(object):
         return self.weights
 
     def generate_particles(self):
+        
         self.weights = self.weights/self.weights.sum()
         self.weights = np.nan_to_num(self.weights)
         sample_range = NUM_PARTICLES if self.sample_points.shape[0] > NUM_PARTICLES else self.sample_points.shape[0]
@@ -317,6 +320,7 @@ class Localizacion(object):
         return dist[0]
 
     def run(self):
+        
         while not rospy.is_shutdown() and not self.localized:
             if self.map is not None and len(self.sample_points) > 0 and self.updated_odom:
 
@@ -333,12 +337,14 @@ class Localizacion(object):
                     
                     # Publicamos la velocidad deseada y esperamos a que pase el rate
                     self.vel_pub.publish(speed)
-                    rospy.sleep(1)
 
                 delta_x = self.x - self.previous_odom[0]
                 delta_y = self.y - self.previous_odom[1]
                 delta_yaw = self.yaw - self.previous_odom[2]
 
+
+
+                
                 self.timer_st()
                 self.move_samples(delta_x, delta_y, delta_yaw)      # AVANZAMOS LOS PUNTOS DEL FILTRO, MÁS UN CIERTO RUIDO
                 self.remove_invalids()                              # REMOVEMOS TODA PARTICULA EN UNA POSICION INVALIDA
