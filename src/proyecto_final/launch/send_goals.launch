@@ -1,0 +1,3 @@
+<launch>
+<node pkg="proyecto_final" type="set_nav_goals.py" name="script_poses" />
+</launch>
