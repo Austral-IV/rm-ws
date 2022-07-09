@@ -29,14 +29,16 @@ if __name__ == '__main__':
     move_base_client = actionlib.SimpleActionClient( '/move_base', MoveBaseAction )
     move_base_client.wait_for_server()
     
-    goal = 0
-    while not rospy.is_shutdown() and not Done:
+    move_base_goal = MoveBaseGoal()
+    move_base_goal.target_pose.header.frame_id = 'map'
+    move_base_goal.target_pose.header.stamp = rospy.Time.now()
+
+    for goal in range(2):
         
         position= GOALS["pos"][goal]
         orientation= GOALS["orient"][goal]
-
         goal_pose = Pose()
-        
+
         goal_pose.position.x = position[0]
         goal_pose.position.y = position[1]
         goal_pose.orientation.x = orientation[0]
@@ -44,9 +46,6 @@ if __name__ == '__main__':
         goal_pose.orientation.z = orientation[2]
         goal_pose.orientation.w = orientation[3]
 
-        move_base_goal = MoveBaseGoal()
-        move_base_goal.target_pose.header.frame_id = 'map'
-        move_base_goal.target_pose.header.stamp = rospy.Time.now()
         move_base_goal.target_pose.pose = goal_pose
         move_base_client.send_goal( move_base_goal, done_cb = goal_done )
 
