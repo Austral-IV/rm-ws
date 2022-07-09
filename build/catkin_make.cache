@@ -1,2 +1,2 @@
-ayu4:lab-1:lab-2:lab-3:very_simple_robot_simulator:yocs_cmd_vel_mux
+ayu4:lab-1:lab-2:lab-3:proyecto_final:very_simple_robot_simulator:yocs_cmd_vel_mux
 -DCATKIN_DEVEL_PREFIX=/home/juantinux/rm-ws/devel -DCMAKE_INSTALL_PREFIX=/home/juantinux/rm-ws/install -G Unix Makefiles

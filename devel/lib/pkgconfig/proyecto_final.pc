@@ -1,0 +1,8 @@
+prefix=/home/juantinux/rm-ws/devel
+
+Name: proyecto_final
+Description: Description of proyecto_final
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

@@ -13,15 +13,13 @@ std_msgs/String.h
 -
 geometry_msgs/Pose.h
 -
+geometry_msgs/PoseWithCovarianceStamped.h
+-
 geometry_msgs/Twist.h
 -
 nav_msgs/Odometry.h
 -
 tf/transform_broadcaster.h
--
-
-/home/juantinux/rm-ws/src/very_simple_robot_simulator/include/very_simple_robot_simulator/vsrs_utils.h
-vector
 -
 
 /home/juantinux/rm-ws/src/very_simple_robot_simulator/src/kobuki_simulator.cpp
@@ -38,12 +36,6 @@ geometry_msgs/TransformStamped.h
 kobuki_simulator.h
 /home/juantinux/rm-ws/src/very_simple_robot_simulator/src/kobuki_simulator.h
 ros/ros.h
--
-
-/home/juantinux/rm-ws/src/very_simple_robot_simulator/src/vsrs_utils.cpp
-vsrs_utils.h
-/home/juantinux/rm-ws/src/very_simple_robot_simulator/src/vsrs_utils.h
-cmath
 -
 
 /opt/ros/noetic/include/geometry_msgs/Point.h
@@ -138,6 +130,26 @@ ros/builtin_message_traits.h
 ros/message_operations.h
 -
 geometry_msgs/Pose.h
+-
+
+/opt/ros/noetic/include/geometry_msgs/PoseWithCovarianceStamped.h
+string
+-
+vector
+-
+map
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+std_msgs/Header.h
+-
+geometry_msgs/PoseWithCovariance.h
 -
 
 /opt/ros/noetic/include/geometry_msgs/Quaternion.h

@@ -35,6 +35,14 @@
 /home/juantinux/rm-ws/build/gtest/googletest/CMakeFiles/test.dir
 /home/juantinux/rm-ws/build/gtest/googletest/CMakeFiles/gtest_main.dir
 /home/juantinux/rm-ws/build/gtest/googletest/CMakeFiles/gtest.dir
+/home/juantinux/rm-ws/build/proyecto_final/CMakeFiles/install/strip.dir
+/home/juantinux/rm-ws/build/proyecto_final/CMakeFiles/install/local.dir
+/home/juantinux/rm-ws/build/proyecto_final/CMakeFiles/install.dir
+/home/juantinux/rm-ws/build/proyecto_final/CMakeFiles/list_install_components.dir
+/home/juantinux/rm-ws/build/proyecto_final/CMakeFiles/rebuild_cache.dir
+/home/juantinux/rm-ws/build/proyecto_final/CMakeFiles/edit_cache.dir
+/home/juantinux/rm-ws/build/proyecto_final/CMakeFiles/test.dir
+/home/juantinux/rm-ws/build/proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir
 /home/juantinux/rm-ws/build/ayu4/CMakeFiles/install/strip.dir
 /home/juantinux/rm-ws/build/ayu4/CMakeFiles/install/local.dir
 /home/juantinux/rm-ws/build/ayu4/CMakeFiles/edit_cache.dir

@@ -54,6 +54,7 @@ CMAKE_BINARY_DIR = /home/juantinux/rm-ws/build
 
 # The main recursive "all" target.
 all: gtest/all
+all: proyecto_final/all
 all: ayu4/all
 all: lab-1/all
 all: lab-2/all
@@ -65,6 +66,7 @@ all: yocs_cmd_vel_mux/all
 
 # The main recursive "preinstall" target.
 preinstall: gtest/preinstall
+preinstall: proyecto_final/preinstall
 preinstall: ayu4/preinstall
 preinstall: lab-1/preinstall
 preinstall: lab-2/preinstall
@@ -81,6 +83,7 @@ clean: CMakeFiles/clean_test_results.dir/clean
 clean: CMakeFiles/tests.dir/clean
 clean: CMakeFiles/download_extra_data.dir/clean
 clean: gtest/clean
+clean: proyecto_final/clean
 clean: ayu4/clean
 clean: lab-1/clean
 clean: lab-2/clean
@@ -231,6 +234,24 @@ lab-3/preinstall:
 lab-3/clean:
 
 .PHONY : lab-3/clean
+
+#=============================================================================
+# Directory level rules for directory proyecto_final
+
+# Recursive "all" directory target.
+proyecto_final/all:
+
+.PHONY : proyecto_final/all
+
+# Recursive "preinstall" directory target.
+proyecto_final/preinstall:
+
+.PHONY : proyecto_final/preinstall
+
+# Recursive "clean" directory target.
+proyecto_final/clean: proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/clean
+
+.PHONY : proyecto_final/clean
 
 #=============================================================================
 # Directory level rules for directory very_simple_robot_simulator
@@ -568,6 +589,33 @@ gtest: gtest/googletest/CMakeFiles/gtest.dir/rule
 gtest/googletest/CMakeFiles/gtest.dir/clean:
 	$(MAKE) -f gtest/googletest/CMakeFiles/gtest.dir/build.make gtest/googletest/CMakeFiles/gtest.dir/clean
 .PHONY : gtest/googletest/CMakeFiles/gtest.dir/clean
+
+#=============================================================================
+# Target rules for target proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir
+
+# All Build rule for target.
+proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/all:
+	$(MAKE) -f proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/build.make proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/depend
+	$(MAKE) -f proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/build.make proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/juantinux/rm-ws/build/CMakeFiles --progress-num= "Built target _catkin_empty_exported_target"
+.PHONY : proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/all
+
+# Build rule for subdir invocation for target.
+proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/juantinux/rm-ws/build/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/juantinux/rm-ws/build/CMakeFiles 0
+.PHONY : proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/rule
+
+# Convenience name for target.
+_catkin_empty_exported_target: proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/rule
+
+.PHONY : _catkin_empty_exported_target
+
+# clean rule for target.
+proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/clean:
+	$(MAKE) -f proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/build.make proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/clean
+.PHONY : proyecto_final/CMakeFiles/_catkin_empty_exported_target.dir/clean
 
 #=============================================================================
 # Target rules for target ayu4/CMakeFiles/std_msgs_generate_messages_py.dir

@@ -9,6 +9,7 @@ very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator
  /opt/ros/noetic/include/geometry_msgs/Pose.h
  /opt/ros/noetic/include/geometry_msgs/PoseStamped.h
  /opt/ros/noetic/include/geometry_msgs/PoseWithCovariance.h
+ /opt/ros/noetic/include/geometry_msgs/PoseWithCovarianceStamped.h
  /opt/ros/noetic/include/geometry_msgs/Quaternion.h
  /opt/ros/noetic/include/geometry_msgs/QuaternionStamped.h
  /opt/ros/noetic/include/geometry_msgs/Transform.h
@@ -114,6 +115,7 @@ very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator
  /opt/ros/noetic/include/geometry_msgs/Pose.h
  /opt/ros/noetic/include/geometry_msgs/PoseStamped.h
  /opt/ros/noetic/include/geometry_msgs/PoseWithCovariance.h
+ /opt/ros/noetic/include/geometry_msgs/PoseWithCovarianceStamped.h
  /opt/ros/noetic/include/geometry_msgs/Quaternion.h
  /opt/ros/noetic/include/geometry_msgs/QuaternionStamped.h
  /opt/ros/noetic/include/geometry_msgs/Transform.h

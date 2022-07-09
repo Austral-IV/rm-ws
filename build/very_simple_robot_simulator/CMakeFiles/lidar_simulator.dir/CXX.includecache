@@ -48,12 +48,6 @@ lidar_simulator.h
 ros/ros.h
 -
 
-/home/juantinux/rm-ws/src/very_simple_robot_simulator/src/vsrs_utils.cpp
-vsrs_utils.h
-/home/juantinux/rm-ws/src/very_simple_robot_simulator/src/vsrs_utils.h
-cmath
--
-
 /opt/ros/noetic/include/cv_bridge/cv_bridge.h
 sensor_msgs/Image.h
 -

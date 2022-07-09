@@ -8,6 +8,7 @@ very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator
 very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator.cpp.o: /opt/ros/noetic/include/geometry_msgs/Pose.h
 very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator.cpp.o: /opt/ros/noetic/include/geometry_msgs/PoseStamped.h
 very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator.cpp.o: /opt/ros/noetic/include/geometry_msgs/PoseWithCovariance.h
+very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator.cpp.o: /opt/ros/noetic/include/geometry_msgs/PoseWithCovarianceStamped.h
 very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator.cpp.o: /opt/ros/noetic/include/geometry_msgs/Quaternion.h
 very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator.cpp.o: /opt/ros/noetic/include/geometry_msgs/QuaternionStamped.h
 very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator.cpp.o: /opt/ros/noetic/include/geometry_msgs/Transform.h
@@ -113,6 +114,7 @@ very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator
 very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator_node.cpp.o: /opt/ros/noetic/include/geometry_msgs/Pose.h
 very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator_node.cpp.o: /opt/ros/noetic/include/geometry_msgs/PoseStamped.h
 very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator_node.cpp.o: /opt/ros/noetic/include/geometry_msgs/PoseWithCovariance.h
+very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator_node.cpp.o: /opt/ros/noetic/include/geometry_msgs/PoseWithCovarianceStamped.h
 very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator_node.cpp.o: /opt/ros/noetic/include/geometry_msgs/Quaternion.h
 very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator_node.cpp.o: /opt/ros/noetic/include/geometry_msgs/QuaternionStamped.h
 very_simple_robot_simulator/CMakeFiles/kobuki_simulator.dir/src/kobuki_simulator_node.cpp.o: /opt/ros/noetic/include/geometry_msgs/Transform.h
