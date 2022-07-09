@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-  <node pkg="very_simple_robot_simulator" name ="kobuki_simulator" type ="kobuki_simulator"/>
+  <node pkg="very_simple_robot_simulator" name ="kobuki_simulator" type ="kobuki_simulator">
   </node>
 
   <node pkg="very_simple_robot_simulator" name ="lidar_simulator" type ="lidar_simulator">
@@ -9,9 +9,15 @@
     <param name="view_depth" value="20.0"/>  <!-- creo que está bien instanciado -->
   </node>
 <!-- levantar nodo map_server. Entregándole la posición del mapa -->
- <node name="map_server" pkg="map_server" type="map_server" args="$(proyecto_final)/maps/mapa_bodega.yaml" />
+ <node name="map_server" pkg="map_server" type="map_server" args="$(find proyecto_final)/maps/mapa_bodega.yaml" />
+
 <!-- levantar nodo tf para transformación de ejes de coordenadas. Entregar como parámetro  de diferencia de coordenadas (0,0,0,0,0,0)-->
+<node pkg="tf" type="static_transform_publisher" name="transormador_coords" args="0 0 0 0 0 0 link1_parent link1 100" />
+<!-- no estoy seguro de si los últimos 3 valores son necesarios -->
+
 <!-- levantar rviz para visualización -->
+<node pkg="rviz" type="rviz" name="rviz"/>
+
 
 
 
