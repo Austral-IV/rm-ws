@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="very_simple_robot_simulator" name ="kobuki_simulator" type ="kobuki_simulator"/>
+  </node>
+
+  <node pkg="very_simple_robot_simulator" name ="lidar_simulator" type ="lidar_simulator">
+    <param name="effective_hfov" value="181"/> 
+    <param name="view_depth" value="20.0"/>  <!-- creo que está bien instanciado -->
+  </node>
+<!-- levantar nodo map_server -->
+
+  <node pkg="very_simple_robot_simulator" name ="map_server" type ="kobuki_simulator"/>
+  </node>
+
+
+
+
+
+  <!-- <include file="$(find very_simple_robot_simulator)/launch/minimal_simulator.launch" />
+  <include file="$(find very_simple_robot_simulator)/launch/lidar_simulator.launch" /> -->
+  <!-- <node pkg="very_simple_robot_simulator" name ="world_state_gui" type ="world_state_gui.py">
+   <param name="/map_file" type="yaml" value="$(find lab-3)/mapas/mapa.yaml"/>
+  </node> -->
+  <!-- <node pkg="rqt_image_view" name="image_view_debug" type="rqt_image_view"  args="/img_map"/> -->   
+</launch>
