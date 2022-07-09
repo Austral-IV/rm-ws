@@ -44,6 +44,9 @@
 <rosparam file="$(find proyecto_final)/param/move_base_params.yaml" command="load" />
 </node>
 
+<!-- levantamos el script que entregará las poses. Conviene levantarlo manualmente después de tener todo listo -->
+<!-- <node pkg="proyecto_final" type="set_nav_goals.py" name="script_poses" /> -->
+
 <!-- <node pkg="very_simple_robot_simulator" name ="world_state_gui" type ="world_state_gui.py">
   <param name="/map_file" type="yaml" value="$(find lab-3)/mapas/mapa.yaml"/>
 </node> -->
