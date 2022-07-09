@@ -8,10 +8,11 @@
     <param name="effective_hfov" value="181"/> 
     <param name="view_depth" value="20.0"/>  <!-- creo que está bien instanciado -->
   </node>
-<!-- levantar nodo map_server -->
+<!-- levantar nodo map_server. Entregándole la posición del mapa -->
+ <node name="map_server" pkg="map_server" type="map_server" args="$(proyecto_final)/maps/mapa_bodega.yaml" />
+<!-- levantar nodo tf para transformación de ejes de coordenadas. Entregar como parámetro  de diferencia de coordenadas (0,0,0,0,0,0)-->
+<!-- levantar rviz para visualización -->
 
-  <node pkg="very_simple_robot_simulator" name ="map_server" type ="kobuki_simulator"/>
-  </node>
 
 
 
