@@ -33,9 +33,9 @@ class GoalSender():
         # rospy.loginfo( 'DONE status: %s (%s)', self.move_base_client.get_goal_status_text(), str( status ) )
         goal_coord = self.GOALS["pos"][self.goal]
         rospy.loginfo( f"Reached Goal: {goal_coord}")
-        if self.goal >= 2: pass
-        self.goal += 1
-        self.set_goal()
+        if self.goal < 2:
+            self.goal += 1
+            self.set_goal()
 
     def set_goal(self):
         goal = self.goal
